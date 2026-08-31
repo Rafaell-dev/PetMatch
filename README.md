@@ -54,6 +54,65 @@ Retorna uma lista de todos os animais cadastrados.
 ]
 ```
 
+---
+
+### Cadastrar Animal
+Cadastra um novo animal para adoção.
+
+* **URL:** `/api/animais`
+* **Método:** `POST`
+* **Tipo de Conteúdo:** `application/json`
+
+#### Body da Requisição:
+
+```json
+{
+  "nome": "Thor",
+  "especie": "Cachorro",
+  "idade": 4
+}
+```
+
+| Campo     | Tipo     | Obrigatório | Descrição                        |
+|-----------|----------|-------------|----------------------------------|
+| `nome`    | `string` | Sim         | Nome do animal                   |
+| `especie` | `string` | Sim         | Espécie do animal                |
+| `idade`   | `number` | Sim         | Idade do animal (>= 0)          |
+
+#### Resposta de Sucesso:
+
+* **Status:** `201 Created`
+
+```json
+{
+  "id": 4,
+  "nome": "Thor",
+  "especie": "Cachorro",
+  "idade": 4,
+  "disponivel": true
+}
+```
+
+> O `id` é gerado automaticamente pelo sistema e o campo `disponivel` é definido como `true`.
+
+#### Resposta de Erro:
+
+* **Status:** `400 Bad Request`
+
+```json
+{
+  "message": "Nome, espécie e idade são obrigatórios"
+}
+```
+
+#### Códigos de Status:
+
+| Código | Descrição                         |
+|--------|-----------------------------------|
+| `201`  | Animal cadastrado com sucesso     |
+| `400`  | Dados inválidos ou ausentes       |
+
+
 ## Workflow Git
 
 Este projeto segue o fluxo de trabalho **Gitflow**:
