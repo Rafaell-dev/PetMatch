@@ -1,0 +1,31 @@
+name: CI - Push
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+
+jobs:
+  build-and-test:
+    name: Build & Test (Push)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Compilar projeto TypeScript
+        run: npm run build
+
+      - name: Executar testes com cobertura
+        run: npm test
