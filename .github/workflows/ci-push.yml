@@ -5,10 +5,13 @@ on:
     branches:
       - main
       - 'feature/**'
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-test:
-    name: Build & Test (Push)
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -27,5 +30,32 @@ jobs:
       - name: Compilar projeto TypeScript
         run: npm run build
 
-      - name: Executar testes com cobertura
-        run: npm test
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Verificação de Linter
+        run: npm run lint
+
+      - name: Executar testes de unidade e integração com cobertura
+        run: npm run test:ci
+
+      - name: Verificar cobertura de código
+        run: |
+          echo "📊 Relatório de cobertura gerado em coverage/"
+          echo "O Jest já está configurado para exigir cobertura mínima de 90%"
+          echo "Se a cobertura for menor que 90%, o job falhará automaticamente"
