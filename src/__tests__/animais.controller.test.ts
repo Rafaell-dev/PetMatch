@@ -111,4 +111,32 @@ describe('Animais API', () => {
       expect(response.body).toHaveProperty('message', 'Idade deve ser um número maior ou igual a zero');
     });
   });
+
+  describe('DELETE /api/animais/:id', () => {
+    it('should delete an existing animal and return 204', async () => {
+      const response = await request(app).delete('/api/animais/1');
+
+      expect(response.status).toBe(204);
+      expect(response.body).toEqual({});
+
+      // Verificar que o animal foi removido
+      const listResponse = await request(app).get('/api/animais');
+      const ids = listResponse.body.map((a: any) => a.id);
+      expect(ids).not.toContain(1);
+    });
+
+    it('should return 404 when trying to delete a non-existing animal', async () => {
+      const response = await request(app).delete('/api/animais/999');
+
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('message', 'Animal não encontrado');
+    });
+
+    it('should return 404 for an invalid (non-numeric) id', async () => {
+      const response = await request(app).delete('/api/animais/abc');
+
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('message', 'Animal não encontrado');
+    });
+  });
 });

@@ -56,3 +56,17 @@ export const cadastrarAnimal = (req: Request, res: Response) => {
 
   return res.status(201).json(novoAnimal);
 };
+
+export const removerAnimal = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const index = animais.findIndex((a) => a.id === Number(id));
+
+  if (index === -1) {
+    return res.status(404).json({
+      message: 'Animal não encontrado',
+    });
+  }
+
+  animais.splice(index, 1);
+  return res.sendStatus(204);
+};
