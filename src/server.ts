@@ -10,5 +10,6 @@ app.use(express.json());
 app.use('/api/animais', animaisRoutes);
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Server is running on http://localhost:${PORT}`);
 });
