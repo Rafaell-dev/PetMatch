@@ -2,6 +2,7 @@ import express from 'express';
 import animaisRoutes from './routes/animais.routes';
 
 const app = express();
+app.disable('x-powered-by');
 const PORT = 8080;
 
 app.use(express.json());
